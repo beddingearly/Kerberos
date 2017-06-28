@@ -4,14 +4,21 @@ public class EncryMessage{
 	//public static String strK = "0000111100001111000011110000111100001111000011110000111100001111";
 	//public static String strKK = "asdfghjk";
 	
-	/*public static void main(String[] args){
+	public static void main(String[] args){
 		String strKK = "asdfghjk";
-		String ss = "asfdjsfnlasnangsa0934502*(&%&";
+		String ss = "0010101010101010010001010101010101010101010101001010101010111101010010101001010101";
 		String s = encryChatMessage(ss, strKK);
-		System.out.println(s);
-		String sss = decryMessage(s, strKK);
-		System.out.println(sss);
-	}*/
+		String temp2 = decryMessage(s, strKK);
+		System.out.println("一次解密 "+temp2);
+		String tmp = encryChatMessage(s, strKK);
+		String sss = decryMessage(tmp, strKK);
+		String temp = decryMessage(sss, strKK);
+		System.out.println("明文          "+ss);
+		System.out.println("一次加密 "+s);
+		System.out.println("二次加密 "+tmp);
+		System.out.println("一次解密 "+sss);
+		System.out.println("二次解密 "+temp);
+	}
 	//将字符串转换成二进制字符串
 	public static String StrToBinstr(String str){
 		char[] strChar=str.toCharArray();
@@ -25,35 +32,61 @@ public class EncryMessage{
 	}
 	public static String encryChatMessage(String message, String skey){
 		String str = message, jta_c = "";
-		byte []bt = str.getBytes();
-		int l =bt.length;
+		String s = "";
+		int l =str.length();
 		while(l%8 != 0){
 			l++;
-		}
-		byte []newbt = new byte[l];
-		for(int i = 0; i < newbt.length; i++){
-			if(i < bt.length){
-				newbt[i] = bt[i];
-			} else {
-				newbt[i] = 0;
-			}
+			message += (char)0;
 		}
 		
 		for(int i = 0; i < l/8; i++){
 			str = "";
-			for(int j = i*8; j < (i+1)*8; j++){
-				String s2 = "";
-	        	int a = newbt[j];
-	        	s2 += a/128;
-	        	s2 += (a%128)/64;
-	        	s2 += (a%64)/32;
-	        	s2 += (a%32)/16;
-	        	s2 += (a%16)/8;
-	        	s2 += (a%8)/4;
-	        	s2 += (a%4)/2;
-	        	s2 += a%2;
-	        	str += s2;
+				for(int j = i*8; j < (i+1)*8; j++){
+					String s2 = "";
+					String stem = "";
+					stem += message.charAt(j);
+					int a = (int)message.charAt(j);
+		        	s2 += a/128;
+		        	s2 += (a%128)/64;
+		        	s2 += (a%64)/32;
+		        	s2 += (a%32)/16;
+		        	s2 += (a%16)/8;
+		        	s2 += (a%8)/4;
+		        	s2 += (a%4)/2;
+		        	s2 +=  a%2;
+		        	str += s2;
+				}
+			/*if(i < message.length()/8){
+				for(int j = i*8; j < (i+1)*8; j++){
+					String s2 = "";
+					String stem = "";
+					//stem += message.charAt(j);
+		        	int a = (int)message.charAt(j);
+		        	s2 += a/128;
+		        	s2 += (a%128)/64;
+		        	s2 += (a%64)/32;
+		        	s2 += (a%32)/16;
+		        	s2 += (a%16)/8;
+		        	s2 += (a%8)/4;
+		        	s2 += (a%4)/2;
+		        	s2 += a%2;
+		        	str += s2;
+				}
 			}
+			if(i >= message.length()/8){
+				for(int j = i*8; j < (i+1)*8; j++){
+					String s2 = "";
+		        	s2 += 0;
+		        	s2 += 0;
+		        	s2 += 0;
+		        	s2 += 0;
+		        	s2 += 0;
+		        	s2 += 0;
+		        	s2 += 0;
+		        	s2 += 0;
+		        	str += s2;
+				}
+			}*/
 			String strK = StrToBinstr(skey);
 			Key key = new DesKey(strK);
 			Message Mmessage = new M(str);
@@ -62,7 +95,10 @@ public class EncryMessage{
 			
 			Message Cmessage =  Mmessage.toC(key, des);
 			
+			
 			str = Cmessage.getValue();
+			
+			//System.out.println(Mmessage);
 			
 			for(int k = 0; k < str.length()/8; k++){
 				int a = 0;
@@ -73,40 +109,34 @@ public class EncryMessage{
 	        		a += Integer.parseInt(t)*(num);
 	        		num /= 2;
 	        	}
+	        	s += a;
 	        	char c = (char) a;
 	        	jta_c += c;
 			}
 		}
+		//System.out.println(s);
+		//return s;
 		return jta_c;
 	}
 	
 	/* 
 	 * 解密信息*/
 	public static String decryMessage(String message, String skey){
-		String jta_m = "";
+		String jta_m = "", s = "";
 		String str = message;
 		int l =str.length();
-		int bt[] = new int[l];
-		for(int i = 0; i < l; i++){
-			bt[i] = str.charAt(i);
-		}
 		while(l%8 != 0){
 			l++;
+			message += (char)0;
 		}
-		int []newbt = new int[l];
-		for(int i = 0; i < newbt.length; i++){
-			if(i < bt.length){
-				newbt[i] = bt[i];
-			} else {
-				newbt[i] = 0;
-			}
-		}
-		
+		String tt = "";
 		for(int i = 0; i < l/8; i++){
 			str = "";
 			for(int j = i*8; j < (i+1)*8; j++){
 				String s2 = "";
-	        	int a = newbt[j];
+				String stem = "";
+				stem += message.charAt(j);
+				int a = (int)message.charAt(j);
 	        	s2 += a/128;
 	        	s2 += (a%128)/64;
 	        	s2 += (a%64)/32;
@@ -114,34 +144,67 @@ public class EncryMessage{
 	        	s2 += (a%16)/8;
 	        	s2 += (a%8)/4;
 	        	s2 += (a%4)/2;
-	        	s2 += a%2;
+	        	s2 +=  a%2;
 	        	str += s2;
 			}
+			/*if(i < message.length()/8){
+				for(int j = i*8; j < (i+1)*8; j++){
+					String s2 = "";
+					String stem = "";
+					stem += message.charAt(j);
+					int a = (int)message.charAt(j);
+		        	s2 += a/128;
+		        	s2 += (a%128)/64;
+		        	s2 += (a%64)/32;
+		        	s2 += (a%32)/16;
+		        	s2 += (a%16)/8;
+		        	s2 += (a%8)/4;
+		        	s2 += (a%4)/2;
+		        	s2 +=  a%2;
+		        	str += s2;
+				}
+			}
+			if(i >= message.length()/8){
+				for(int j = i*8; j < (i+1)*8; j++){
+					String s2 = "";
+		        	s2 += 0;
+		        	s2 += 0;
+		        	s2 += 0;
+		        	s2 += 0;
+		        	s2 += 0;
+		        	s2 += 0;
+		        	s2 += 0;
+		        	s2 += 0;
+		        	str += s2;
+				}
+			}*/
+			
 			String strK = StrToBinstr(skey);
 			Key key = new DesKey(strK);
 			Message Cmessage = new C(str);
 			
 			Feistel des = new Des(16);
-			
 			Message Mmessage =  Cmessage.toM(key, des);
-			
+			//System.out.println(Mmessage);
 			str = Mmessage.getValue();
-			
+			//System.out.println(str);
 			for(int k = 0; k < str.length()/8; k++){
 				int a = 0;
 	        	int num = 128;
 	        	for(int j = 8*k; j < (k+1)*8; j++){
 	        		String t = "";
 	        		t += str.charAt(j);
+	        		tt+=t;
 	        		a += Integer.parseInt(t)*(num);
 	        		num /= 2;
 	        	}
+	        	//s +=a;
 	        	//System.out.println(a);
 	        	char c = (char) a;
 	        	jta_m += c;
 			}
 		}
-		
+
 		return jta_m;
 	}
 	

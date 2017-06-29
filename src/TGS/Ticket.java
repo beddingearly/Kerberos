@@ -27,8 +27,9 @@ public class Ticket {
 	
 	private String ticketDecryption(String ticket){
 		//as和tgs共同维护的密钥
-		String key="abcdefgh";
-		return EncryMessage.decryMessage(ticket, key);
+		String keyg="abcdefgh";
+		System.out.println(EncryMessage.decryMessage(ticket, keyg));
+		return EncryMessage.decryMessage(ticket, keyg);
 	}
 	
 	public void divTicketTGS(String TTGS){

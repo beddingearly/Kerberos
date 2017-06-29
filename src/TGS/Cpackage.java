@@ -12,7 +12,7 @@ public class Cpackage {
 	 * @return
 	 */
 	public static String Createkey(){
-		String base = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";   
+		String base = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";   
 		 Random random = new Random();   
 		    StringBuffer sb = new StringBuffer();   
 		    for (int i = 0; i < 8; i++) {   

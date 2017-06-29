@@ -89,6 +89,7 @@ public class DataPacket {
 		}
 		// 如果数据包中包含包含authenticator，解析出authenticator。
 		if (head.charAt(9) == '1') {
+			System.out.println(data.substring(0,TICKET_LENGTH));
 			ticket.divTicketTGS(data.substring(0,TICKET_LENGTH));
 			data = data.substring(TICKET_LENGTH,data.length());
 		}
@@ -99,7 +100,7 @@ public class DataPacket {
 		}
 		// 如果数据包中包含票据，解析出票据。
 		if (head.charAt(11) == '1') {
-			authenticator.divTicketTGS(data.substring(0, AUTHENTICATOR_LENGTH),dataPacket);;
+			authenticator.divTicketTGS(data.substring(0, AUTHENTICATOR_LENGTH),dataPacket);
 			data = data.substring(AUTHENTICATOR_LENGTH, data.length());
 		}
 

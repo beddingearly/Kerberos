@@ -7,6 +7,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import javax.swing.JTextArea;
 
+import com.application.java.Util;
 
 import text2.EncryMessage;
 
@@ -36,20 +37,20 @@ public class MyRunnable implements Runnable{
 			String s =null;
 			s = cin.readLine();
 			s=Util.binaryToString(s);
+			System.out.println("C->TGS:二进制"+s);
 			DataPacket dataPacket = new DataPacket();
 			dataPacket.parseMessage(s, dataPacket);
 			linksql z=new linksql(); 
 			int num= z.Authen(dataPacket.getDes_id());
 			if(num==1){	
 				String Finaltext=TGStoC(dataPacket);
-				//System.out.println( Finaltext);
 				cout.println(Finaltext);
 				cout.flush();
 			}else{
 				text.append("发票失败！\n");
 			}					
 		}catch(Exception e){
-		System.out.println("服务器端出错，信息如下：\n"+e.getMessage());
+			e.printStackTrace();//System.out.println("服务器端出错，信息如下：\n"+e.getMessage());
 		}		
 	}
 	/**
@@ -72,7 +73,7 @@ public class MyRunnable implements Runnable{
 		String AD = Authen.getAd();
 		String CID = Authen.getSrc_id();
 		String TS3 = Authen.getTimeStamp();
-		if( CIDt==CID && ADt==AD ){
+		if( CIDt.equals(CID) ){                 //***********AD有问题
 			String head ="000100110110";
 			String Keycv = a.Createkey();
 			String LifeTime4 = a.GetLifetime();
@@ -81,8 +82,11 @@ public class MyRunnable implements Runnable{
 			String Keyv =kk.Getkey1(VIDt);          //TGS与V维护的秘钥
 			ticketv = EncryMessage.encryChatMessage(ticketv,Keyv);
 		    mess = VIDt + TS4 + ticketv + Keycv;
+		    System.out.println("TGS->C:未加密"+mess);
 			mess = head + EncryMessage.encryChatMessage(mess, Key);
+			 System.out.println("TGS->C:加密"+mess);
 			mess = Util.toBinaryString(mess);  //转二进制
+			 System.out.println("TGS->C:二进制"+mess);
 			str = CIDt;
 			text.append(str+"发票成功！\n");
 		}else{

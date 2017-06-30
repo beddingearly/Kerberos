@@ -26,6 +26,7 @@ public class Communicate implements ActionListener{
 	BufferedReader sin = null;
 	PrintWriter sout = null;
 	JTextArea ta;
+	JScrollPane jsp;
 	public Communicate()
 	{
 		
@@ -38,7 +39,8 @@ public class Communicate implements ActionListener{
 		dialogPane.setLayout(null);
 		d.setBounds(100,100,550,450);          //设置窗口的大小
 		textShowMessage=new JTextArea();
-		textShowMessage.setBounds(5, 5, 525, 200);      //设置显示输入信息的位置
+		jsp = new JScrollPane(textShowMessage);
+		jsp.setBounds(5, 5, 525, 200);      //设置显示输入信息的位置
 		textSendMessage=new TextField();
 		textSendMessage.setBounds(5, 220, 525, 100);      //设置输入信息的位置
 		b1=new JButton("发送");
@@ -47,7 +49,7 @@ public class Communicate implements ActionListener{
 		b4.addActionListener(this);
 		b1.setBounds(15,350,100,30);              //设置“发送”按钮的位置   
 		b4.setBounds(400,350,100,30);             //设置“退出”按钮的位置
-		dialogPane.add(textShowMessage);
+		dialogPane.add(jsp);
 		dialogPane.add(textSendMessage);
 		dialogPane.add(b1);
 		dialogPane.add(b4);
@@ -88,7 +90,7 @@ public class Communicate implements ActionListener{
 					textShowMessage.append("图灵机器人："+s+"\n");
 				}
 			} catch (IOException e1) {
-				e1.printStackTrace();
+				textShowMessage.append("连接中断!\n");
 			}
 		}
 		if(cmd.equals("退出")){

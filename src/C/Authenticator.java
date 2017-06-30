@@ -352,7 +352,6 @@ public class Authenticator implements ActionListener{
 	public static String CtoTGS(String str,String str1,String str2,String str3){
 		String IDV = str;
 		String ticket = str1;
-		System.out.println(ticket);
 		String CID = str2 ;
 		//String address="192168043094";
 		Cpackage a = new Cpackage();
@@ -360,9 +359,7 @@ public class Authenticator implements ActionListener{
 		String  TS3 = a.GetTS();
 		String head ="000100100101";
 		String Authen = CID + address + TS3;  //****** 需要加密用Keyctgs加密
-		System.out.println(key.length());
 		Authen=EncryMessage.encryChatMessage(Authen, key);
-		System.out.println(Authen.length());
 		String Package = head +IDV + ticket+ Authen ;
 		return Package;
 	}
@@ -375,7 +372,6 @@ public class Authenticator implements ActionListener{
 	public static String CtoV(String str,String str1,String str2){
 		String head ="000100000101";
 		String ticket = str;
-		System.out.println(ticket);
 		Cpackage a = new Cpackage();
 		String  TS5 = a.GetTS();
 		timeStamp=TS5;
@@ -383,8 +379,6 @@ public class Authenticator implements ActionListener{
 		String Authen = str1+address+TS5;
 		Authen=EncryMessage.encryChatMessage(Authen, keycv);
 		String Package = head + ticket+ Authen ;
-		System.out.println("Package--->"+Package.length());
-		System.out.println(Package);
 		return Package;
 		
 	}

@@ -18,6 +18,7 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -30,8 +31,9 @@ public class Client implements ActionListener{
 	JButton button1;
 	JButton button2;
 	String idv;
+	JScrollPane jsp;
 	public Client(){
-		super();
+		super();		
 		String[] s={"","简易云计算","图灵机器人","应用服务3","应用服务4"};
 		d=new JFrame();                      //新建一对话框
 		d.setTitle("Client");            //设置标题
@@ -43,7 +45,7 @@ public class Client implements ActionListener{
 		label1.setFont(new Font("",1,20));   //字体设计
 		label1.setBounds(50, 5, 400, 120);      //设置显示信息的位置	
 		label2.setText("请选择应用服务：");
-		label2.setBounds(70, 50, 400, 120);      //设置显示信息的位置	
+		label2.setBounds(70, 50, 400, 120);      //设置显示信息的位置		
 		jc=new JComboBox<String>(s);
 		jc.setBounds(200, 100, 110, 25);
 		button1=new JButton("确定");
